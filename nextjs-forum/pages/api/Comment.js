@@ -19,8 +19,24 @@ export default class Comment extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      loading: true
+      loading: true,
+      upvotes: this.props.upvotes,
+      downvotes: this.props.downvotes
      };
+  }
+
+  //Action Handler - increments upvote on post
+  UpVote = () => {
+    this.setState({
+        upvotes: this.state.upvotes + 1 
+    });
+  }
+
+  //Action Handler - increments downvote on post
+  DownVote = () => {
+    this.setState({
+      downvotes: this.state.downvotes + 1 
+    });
   }
 
   render() {
@@ -39,9 +55,9 @@ export default class Comment extends React.Component {
                 {this.props.content}
               </div>
 
-              <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', float:'right', marginRight:'30px'}}>
-                <Card.Link href="#">upvote <b>{this.props.upvotes}</b></Card.Link>
-                <Card.Link href="#">downvote <b>{this.props.downvotes}</b></Card.Link>
+              <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', float:'right', marginRight:'30px', cursor:'pointer'}}>
+                <Card.Link onClick={this.UpVote} href="#">upvote <b>{this.state.upvotes}</b></Card.Link>
+                <Card.Link onClick={this.DownVote} href="#">downvote <b>{this.state.downvotes}</b></Card.Link>
                 <Card.Link href="#">reply</Card.Link>
               </div>
             </Card.Text>
