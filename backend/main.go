@@ -17,6 +17,7 @@ var ctx context.Context
 var client *firestore.Client
 
 type Comment struct {
+	Topic string
 	Creator string
 	Path string
 	Time int64
@@ -24,6 +25,7 @@ type Comment struct {
 	Upvotes int
 	Downvotes int
 	Score int
+	Replies []Comment
 }
 
 
@@ -39,13 +41,15 @@ func putTest(w http.ResponseWriter, r *http.Request) {
 	unixTime := time.Unix()
 
 	comment := Comment{
+		"Interstellar",
 		"williamyixin",
 		"Interstellar/qtg_sDwQMIerTiFmPaeLP_77-XqtKojZZrQYl2pbpNI/-enTTbkVvfarH8ybfSZ_Ow9aHib_YkJaEfmWt67IHVo",
 		unixTime,
-		"You actually see it happening also. There was a shot as they are landing looking down from the sky and you see something crash into the water.",
+		"Nice catch Dogg.",
 		10000,
 		1209,
 		10000 - 1209,
+		nil,
 	}
 
 	ref := client.Collection("topics").Doc("Interstellar").
