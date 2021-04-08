@@ -37,6 +37,7 @@ export default class StartPost extends React.Component {
           borderRadius: 5,
           backgroundColor: "#FFFFFF",
           maxWidth: "75vw",
+          marginTop: "30px"
         }}
       >
         <Col>
