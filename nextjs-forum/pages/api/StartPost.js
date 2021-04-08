@@ -21,7 +21,7 @@ export default class StartPost extends React.Component {
 
     /* UNCOMMENT BELOW */
 
-    // fetch("http://localhost:3000/", {
+    // fetch("http://localhost:3000/postMessage", {
     //   method: "post",
     //   body: JSON.stringify({text: this.state.text}), //replace with schema
     // }).then(function (response) {
@@ -36,25 +36,38 @@ export default class StartPost extends React.Component {
           padding: "15px",
           borderRadius: 5,
           backgroundColor: "#FFFFFF",
-          maxWidth: "75vw",
-          marginTop: "30px"
+          maxWidth: "74vw",
+          marginLeft: "40px",
+          marginTop: "25px",
         }}
       >
         <Col>
           <Row>
-            <Image src="/prof-pic.png" width={40} height={30} />
-            <h3 style={{ marginLeft: "20px" }}>YourUserNameHere</h3>
+            <Image src="/prof-pic.png" width={35} height={10} />
+            <h4 style={{ marginLeft: "15px" }}>YourUserNameHere</h4>
           </Row>
-
-          <Form.Control
-            onChange={this.updateText}
-            val={this.state.text}
-            style={{ backgroundColor: "#F0F0F0", margin: "15px 0 15px 0" }}
-            placeholder="What's new? Start a new post!"
-            rows="5"
-          />
+          <Row style={{ height: "5px" }} />
           <Row>
-            <Button onClick={this.sendPost}>Post</Button>
+            <Form.Control
+              onChange={this.updateText}
+              val={this.state.text}
+              style={{
+                backgroundColor: "#E5EBEB",
+                marginRight: "15px",
+                width: "85%",
+                marginTop: "10px",
+              }}
+              placeholder="What's new? Start a new post!"
+            />
+            <Button
+              onClick={this.sendPost}
+              style={{
+                height: "50%",
+                marginTop: "10px",
+              }}
+            >
+              Post
+            </Button>
           </Row>
         </Col>
       </div>
