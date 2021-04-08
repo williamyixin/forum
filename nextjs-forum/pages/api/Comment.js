@@ -55,10 +55,10 @@ export default class Comment extends React.Component {
                 {this.props.content}
               </div>
 
-              <div style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', float:'right', marginRight:'30px', cursor:'pointer'}}>
-                <Card.Link onClick={this.UpVote} href="#">upvote <b>{this.state.upvotes}</b></Card.Link>
-                <Card.Link onClick={this.DownVote} href="#">downvote <b>{this.state.downvotes}</b></Card.Link>
-                <Card.Link href="#">reply</Card.Link>
+              <div style={{color:'#0B76E0', display:'flex', flexDirection:'row', float:'right', marginRight:'30px', cursor:'pointer'}}>
+                <Card.Text onClick={this.UpVote} style={{marginLeft:'30px'}}>upvote <b>{this.state.upvotes}</b></Card.Text>
+                <Card.Text onClick={this.DownVote} style={{marginLeft:'30px'}}>downvote <b>{this.state.downvotes}</b></Card.Text>
+                <Card.Text style={{marginLeft:'30px'}}>reply</Card.Text>
               </div>
             </Card.Text>
 
