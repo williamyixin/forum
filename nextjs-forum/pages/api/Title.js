@@ -12,6 +12,7 @@ export default class StartPost extends React.Component {
           height: "220px",
           background: "white",
           marginTop: "30px",
+          marginLeft: "40px",
           borderRadius: 5,
         }}
       >
