@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"strings"
 )
 
 var ctx context.Context
@@ -68,7 +69,7 @@ func putTest(w http.ResponseWriter, r *http.Request) {
 		})
 
 
-	//_ , err := client.Collection("topics").Doc("Interstellar").
+	//  _ , err := client.Collection("topics").Doc("Interstellar").
 	//	Collection("Comments").Doc("qtg_sDwQMIerTiFmPaeLP_77-XqtKojZZrQYl2pbpNI").
 	//	Collection("Comments").Doc("-enTTbkVvfarH8ybfSZ_Ow9aHib_YkJaEfmWt67IHVo").
 	//	Collection("Comments").Doc(uuid).
@@ -101,17 +102,71 @@ func getTest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func writeComment(w http.ResponseWriter, r *http.Request) {
+	path := "Interstellar/qtg_sDwQMIerTiFmPaeLP_77-XqtKojZZrQYl2pbpNI/-enTTbkVvfarH8ybfSZ_Ow9aHib_YkJaEfmWt67IHVo"
+	ref := getReference(path)
 
+	uuid := uuid.NewString()
+	time := time.Now()
+	unixTime := time.Unix()
+
+	comment := Comment{
+		"Interstellar",
+		"michelle",
+		path,
+		unixTime,
+		"haha!",
+		99,
+		100000,
+		99 - 100000,
+		nil,
+	}
+
+	_, err := ref.Collection("Comments").Doc(uuid).
+		Set(ctx, map[string]interface{}{
+			"creator": comment.Creator,
+			"path": comment.Path + "/" + uuid,
+			"time": comment.Time,
+			"content": comment.Content,
+			"upvotes": comment.Upvotes,
+			"downvotes": comment.Downvotes,
+			"score": comment.Score,
+		})
+
+	if err != nil {
+		log.Fatalf("Failed adding alovelace: %v", err)
+	}
+}
+
+func getReference(path string) *firestore.DocumentRef{
+
+	splittedArray := strings.Split(path, "/")
+	ref := client.Collection("topics").Doc(splittedArray[0])
+	for i := 1; i < len(splittedArray); i++ {
+		 ref = ref.Collection("Comments").Doc(splittedArray[i])
+	}
+	//testRef, _ := ref.Get(ctx)
+	//m := testRef.Data()
+	//fmt.Printf("Document data test: %#v\n", m)
+
+	//testRef2, _ := client.Collection("topics").Doc("Interstellar").
+		//Collection("Comments").Doc("qtg_sDwQMIerTiFmPaeLP_77-XqtKojZZrQYl2pbpNI").
+		//Collection("Comments").Doc("-enTTbkVvfarH8ybfSZ_Ow9aHib_YkJaEfmWt67IHVo").Get(ctx)
+	//m = testRef2.Data()
+	//fmt.Printf("Document data manual: %#v\n", m)
+	return ref
+}
 
 func handleRequests() {
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/putTest", putTest)
 	http.HandleFunc("/getTest", getTest)
+	http.HandleFunc("/writeComment", writeComment)
 	log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
 func main() {
-	opt := option.WithCredentialsFile("./service_accounts/forum-7e971-firebase-adminsdk-e3jqe-520d6bf3c5.json")
+	opt := option.WithCredentialsFile("./service_accounts/key.json")
 	ctx = context.Background()
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
